@@ -1,4 +1,4 @@
-const DB_URL = 'https://upadhayay.github.io/db.json'; // papers source
+const DB_URL = 'https://upadhayay.github.io/db.json';
 
 const paperIcon = `
   <div class="card-icon" aria-hidden="true">
