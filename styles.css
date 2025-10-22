@@ -8,7 +8,9 @@
   --radius:14px;
   --shadow:0 10px 22px rgba(16,24,40,.08);
 }
-
+.blog {
+  margin-top: 18px;
+}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
