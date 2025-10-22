@@ -25,10 +25,8 @@ function makeCard(p){
   const authors = formatAuthors(p.authors || p.author);
   const link = p.url || p.link || p.pdf || '#';
   const abstract = p.abstract || p.summary || '';
-
   const safeYear = year ? `<span class="chip">${year}</span>` : '';
   const safeVenue = venue ? `<span class="chip">${venue}</span>` : '';
-
   const card = document.createElement('article');
   card.className = 'card';
   card.innerHTML = `
@@ -45,39 +43,61 @@ function makeCard(p){
   return card;
 }
 
-async function loadPapers(){
+function renderBooks(list){
+  const ul = document.querySelector('.pubs');
+  if (!ul) return;
+  ul.innerHTML = '';
+  const items = Array.isArray(list) ? list.slice() : [];
+  items.sort((a,b)=>(b.year||0)-(a.year||0));
+  items.forEach(b=>{
+    const li = document.createElement('li');
+    const y = b.year ? b.year + ' — ' : '';
+    const t = b.title || 'Untitled';
+    li.textContent = y + t;
+    ul.appendChild(li);
+  });
+}
+
+async function loadData(){
   try{
     const res = await fetch(DB_URL, { cache: 'no-store' });
     if(!res.ok) throw new Error(`Network error ${res.status}`);
     const data = await res.json();
-
+    const books = Array.isArray(data) ? [] : (Array.isArray(data.books) ? data.books : []);
+    if (books.length){
+      renderBooks(books);
+      if (countEl) countEl.textContent = '';
+      if (grid) grid.innerHTML = '';
+      return;
+    }
     const list = Array.isArray(data) ? data
                : Array.isArray(data.papers) ? data.papers
                : Array.isArray(data.publications) ? data.publications
                : [];
-
-    grid.setAttribute('aria-busy','false');
-
+    if (grid) grid.setAttribute('aria-busy','false');
     if(!list.length){
-      grid.innerHTML = `<div class="card"><div>${paperIcon}</div><p class="meta">No papers found in the data source.</p></div>`;
-      countEl.textContent = '';
+      if (grid) grid.innerHTML = `<div class="card"><div>${paperIcon}</div><p class="meta">No papers found in the data source.</p></div>`;
+      if (countEl) countEl.textContent = '';
       return;
     }
-
     list.sort((a,b)=> (parseInt(b.year||b.published||0)||0) - (parseInt(a.year||a.published||0)||0));
-
     const frag = document.createDocumentFragment();
     list.forEach(p => frag.appendChild(makeCard(p)));
-    grid.innerHTML = '';
-    grid.appendChild(frag);
-    countEl.textContent = `${list.length} papers`;
+    if (grid){
+      grid.innerHTML = '';
+      grid.appendChild(frag);
+    }
+    if (countEl) countEl.textContent = `${list.length} papers`;
   }catch(err){
-    grid.setAttribute('aria-busy','false');
-    grid.innerHTML = `<div class="card"><div>${paperIcon}</div><p class="meta">Could not load papers. Please check the link or try again later.</p></div>`;
-    countEl.textContent = '';
+    if (grid){
+      grid.setAttribute('aria-busy','false');
+      grid.innerHTML = `<div class="card"><div>${paperIcon}</div><p class="meta">Could not load data. Please check the link or try again later.</p></div>`;
+    }
+    if (countEl) countEl.textContent = '';
     console.error(err);
   }
 }
 
-document.getElementById('year').textContent = new Date().getFullYear();
-loadPapers();
+const yEl = document.getElementById('year');
+if (yEl) yEl.textContent = new Date().getFullYear();
+loadData();
