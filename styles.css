@@ -108,3 +108,4 @@ footer{margin-top:18px;border-top:1px solid var(--stroke);padding:14px 2px;color
   .triptych{grid-template-columns:1fr}
   .lower{grid-template-columns:1fr}
 }
+.hidden{display:none}
