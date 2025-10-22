@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Albert Einstein — Papers</title>
+  <meta name="description" content="Albert Einstein's personal page with iconic photo and a clean, responsive gallery of publications." />
+  <meta name="theme-color" content="#e9edf4" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="container nav">
+        <a class="brand" href="#" aria-label="Homepage">
+          <span class="brand-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 18l4-12h2l4 12M6.5 12H13"/>
+              <path d="M16 9h5m-5 6h5M16 12h4"/>
+            </svg>
+          </span>
+          <h1>Albert Einstein</h1>
+        </a>
+        <div class="spacer"></div>
+        <span class="tiny-note">Elegant • Subtle • Responsive</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" aria-labelledby="about-title">
+        <div class="hero-wrap">
+          <figure class="portrait" aria-label="Einstein portrait">
+            <img src="https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=800&auto=format&fit=crop" alt="Albert Einstein with characteristic pose" loading="lazy"/>
+          </figure>
+          <div>
+            <h2 id="about-title">“Make it as simple as possible, but not simpler.”</h2>
+            <p>
+              Welcome to my personal page. Below is a living catalog of my publications, each shown as a distinct block. The layout adapts to small laptops and large displays.
+            </p>
+            <div class="actions">
+              <button class="btn primary" onclick="document.getElementById('papers').scrollIntoView({behavior:'smooth'})">View Papers</button>
+              <button class="btn" onclick="window.scrollTo({top:0, behavior:'smooth'})">Back to Top</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="papers" aria-labelledby="papers-title">
+        <div class="section-head">
+          <h3 id="papers-title">Publications</h3>
+          <span class="count" id="paperCount" aria-live="polite"></span>
+        </div>
+        <div class="grid" id="paperGrid" aria-busy="true" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">© <span id="year"></span> Albert Einstein — Built with care and curiosity.</div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
